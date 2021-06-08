@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Zilliqa NFT Wallet</title>
+  <link rel="icon" href="/img/fav_icon.png" />
+  <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css?v=6" />
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+  <script type="text/javascript" src="https://zeeves.io/sdk/sdk.min.js"></script>
+  <script type="text/javascript" src="/js/app.js?v=6"></script>
+</head>
+<body>
+  <div x-data="novelsApp()" x-init="()=>{initApp()}" id="novelsApp">
+    <div id="logo"><img src="/img/logo.png" /></div>
+    <section class="section" id="nav-top">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-3 has-text-right">
+            <button @click="showExample()">show Example Tokens</button>
+          </div>
+          <div class="column is-9 has-text-right pd-px">
+            <button id="default-account" x-show="showDefaultAccount" x-text="defaultAccount"></button>
+            <button class="button-paper" @click="connectZilpay()" x-show="!isConnected">connect Zilpay</button>
+            <button class="button-paper" @click="connectZeeves()" x-show="!isConnected">connect Zeeves</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="book-cont">
+      <div class="columns" id="book-cont-top">
+        <div class="column is-3" id="book-cont-contracts-head">
+          <h3 x-show="isConnected">Contracts</h3>
+        </div>
+        <div class="column is-1"></div>
+        <div class="column is-7" id="book-cont-nfts-head">
+          <h5 x-text="selectedContractTitle"></h5>
+          <div x-html="selectedContractLink"></div>
+        </div>
+        <div class="column is-1"></div>
+      </div>
+      <div class="columns" id="book-cont-body">
+        <div class="column is-3" id="book-cont-contracts-cont">
+          <template x-for="contract in contracts" :key="contract.idx">
+            <div class="tags has-addons" class="contract-cont" @click="showContract(contract.idx)" :class="{ 'active': selectedContract == contract.idx }">
+              <span class="tag is-info is-pulled-left" x-text="contract.title"></span>
+              <span class="tag is-info" x-text="contract.balance"></span>
+            </div>
+          </template>
+
+          <br /><br />
+          <div class="container has-text-centered" x-show="showBtnLoadmoreContracts">
+            <button class="button-stamp" @click="showNextContracts()">Load more</button>
+          </div>
+        </div>
+        <div class="column is-1"></div>
+        <div class="column is-7">
+          <div class="container">
+            <div x-show="!isConnected" class="has-text-centered">
+              To see your tokens please connect you Zilliqa wallet
+            </div>
+            <div x-show="isNoTokens" class="has-text-centered">
+              No FNTs on this account
+            </div>
+            <div class="row columns is-multiline">
+              <template x-for="card in cards" :key="card.id">
+                <div class="column is-4 card-cont">
+                  <div class="card">
+                    <div class="card-image">
+                      <figure class="image is-4by3" @click="showNftPopup(card.idx)">
+                        <img :src="card.url" alt="image">
+                      </figure>
+                    </div>
+                    <div class="card-content">
+                      <div class="content has-text-centered">
+                        <span x-text="card.id" class="id"></span><br />
+                        <span x-text="card.name" class="name"></span>
+                      </div>
+                      <div class="container has-text-centered">
+                        <button class="button-stamp" title="Transfer"@click="showTransferPopup(card.idx)">Transfer</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+
+          </div>
+
+          <br /><br />
+          <div class="container has-text-centered" x-show="showBtnLoadmoreNFTs">
+            <button class="button-stamp" @click="showNextNFTs()">Load more</button>
+          </div>
+
+        </div>
+        <div class="column is-1"></div>
+      </div>
+      <div class="columns" id="book-cont-bot">
+        <div class="column is-3"></div>
+        <div class="column is-1"></div>
+        <div class="column is-7"></div>
+        <div class="column is-1"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container has-text-centered">
+        Zinovels.com 2021
+      </div>
+    </section>
+
+    <div class="modal is-active" x-show="showModalNFT">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <figure class="image" x-html="imgModalNFTCont">
+          <img src="/img/loading.png" alt="image" />
+        </figure>
+        <br />
+        <br />
+        <div>
+          <p>
+            <b>Id:</b> <span x-text="dataModalNFT.id"></span>
+          </p>
+          <p>
+            <b>Name:</b> <span x-text="dataModalNFT.name"></span>
+          </p>
+          <h6>Description:</h6>
+          <p x-text="dataModalNFT.desc"></p>
+
+          <br />
+          <br />
+          <div class="has-text-centered" x-show="!showModalNFTRawData">
+          <button class="button-stamp" @click="showNftPopupRawData">Show MetaData</button>            
+          </div>
+          <div x-show="showModalNFTRawData">
+            <h6>MetaData:</h6>
+            <template x-for="data in dataModalNFT.rawData" :key="data.k">
+              <p x-text="data.val"></p>
+            </template>
+          </div>
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close" @click="showModalNFT = false"></button>
+    </div>
+
+    <div class="modal is-active" x-show="showModalTransfer">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div>
+          <div class="pb-4">
+            Transfer token <span x-text="dataModalTransfer.id"></span> to <input class="input is-info" type="text" placeholder="Put Base16 account address here" x-model="dataModalTransfer.account" />
+          </div>
+          <div class="has-text-centered pb-4" x-show="dataModalTransfer.showMsg">
+            <p x-text="dataModalTransfer.msg"></p>
+          </div>
+          <div class="has-text-centered has-text-danger pb-4" x-show="dataModalTransfer.showErr">
+            <p x-text="dataModalTransfer.errMsg"></p>
+          </div>
+          <div class="has-text-centered" x-show="!dataModalTransfer.showLoading">
+            <button class="button-stamp" @click="showModalTransferDo">Transfer</button>            
+          </div>
+          <div class="has-text-centered" x-show="dataModalTransfer.showLoading">
+            <a class="button is-primary is-loading is-large">&nbsp;</a>
+          </div>
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close" @click="showModalTransfer = false"></button>
+    </div>
+
+    <div class="modal is-active" x-show="showModalInfo">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div>
+          <div class="has-text-centered pb-4" x-show="dataModalInfo.showMsg">
+            <p x-text="dataModalInfo.msg"></p>
+          </div>
+          <div class="has-text-centered has-text-danger pb-4" x-show="dataModalInfo.showErr">
+            <p x-text="dataModalInfo.errMsg"></p>
+          </div>
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close" @click="showModalInfo = false"></button>
+    </div>
+
+  </div>
+</body>
+</html>

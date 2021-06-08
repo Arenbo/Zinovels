@@ -1,0 +1,157 @@
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+body {
+  background-color: #0B3A15;
+  background-image: url(../img/main_bg.png);
+  background-position: left top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #cccccc;
+}
+
+a {
+  color: #0B3A15;
+}
+
+h6 {
+  font-weight: bold;
+}
+
+#logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1rem 2rem 2rem 2rem;
+  background-image: url(../img/logo_bg.png);
+  background-size: cover;
+  text-align: center;
+}
+
+.button-stamp {
+  padding: 0.5rem;
+  background: url(../img/btn.png);
+  background-color: transparent;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: none;
+  border-radius: 0.5rem;
+  color: #ededed;
+}
+.button-paper {
+  padding: 0.6rem 3.0rem 0.8rem 3.0rem;
+  background: url(../img/btn_top.png);
+  background-color: transparent;
+  background-position: top left;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none;
+  color: #333333;
+  font-weight: bold;
+}
+
+.section {
+	padding: 1.5rem 1.5rem 3rem 1.5rem;
+}
+
+#default-account {
+  padding: 0.6rem 1.8rem 0.8rem 1.5rem;
+  background: url(../img/label_paper.png);
+  background-color: transparent;
+  background-position: top left;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none;
+  color: #333333;
+  font-weight: bold;
+}
+
+#book-cont {
+  padding-left: 0;
+}
+#book-cont-top {
+  padding-left: 0;
+  padding-top: 3rem;
+  background-image: url(../img/book_top.png);
+  background-position: right top;
+  background-repeat: no-repeat;
+	background-size: 100%;
+  color: #333333;
+}
+
+#book-cont-body {
+  padding-left: 0;
+  background-image: url(../img/book_body.png);
+  background-position: right top;
+  background-repeat: repeat-y;
+	background-size: 100%;
+  color: #333333;
+}
+
+#book-cont-bot {
+  padding-left: 0;
+  padding-bottom: 4rem;
+  background-image: url(../img/book_bot.png);
+  background-position: right bottom;
+  background-repeat: no-repeat;
+	background-size: 100%;
+  color: #333333;
+}
+
+#book-cont-contracts-head {
+  text-align: center;
+}
+#book-cont-contracts-cont {
+  text-align: right;
+}
+#book-cont-nfts-head {
+  text-align: center;
+}
+
+#book-cont-contracts-cont div.active {
+  font-weight: bold;
+}
+#book-cont-contracts-cont {
+  padding-left: 3rem;
+}
+.modal-content {
+  padding: 2rem;
+  background-image: url(../img/paper_bg.png);
+  background-position: right bottom;
+  background-repeat: repeat-y;
+  background-size: 100%;
+  color: #333333;
+}
+
+.card-cont {
+  padding-top: 2rem;
+  background-image: url(../img/card_bg.png);
+  background-position: left top;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  border: none;
+}
+.card {
+  padding: 0rem 1rem 1.5rem 1rem;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+.card-image {
+  padding-top: 1.5rem;
+}
+#book-cont-contracts-cont .tags {
+  display: block;
+  border-bottom: 1px dotted #333333;
+  margin-bottom: 0.5rem;
+}
+#book-cont-contracts-cont .tag {
+  background: transparent;
+  font-size: 1em;
+  color: #333333;
+  margin-bottom: 0.1rem;
+}
